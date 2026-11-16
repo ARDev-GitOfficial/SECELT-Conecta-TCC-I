@@ -1,0 +1,27 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+}
+
+android {
+    namespace 'br.gov.secel.conecta'
+    compileSdk 35
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    kotlinOptions { jvmTarget = "17" }
+    defaultConfig {
+        applicationId 'br.gov.secel.conecta'
+        minSdk 23
+        targetSdk 35
+        versionCode 3
+        versionName '0.3.0'
+    }
+}
+
+dependencies {
+    implementation 'com.google.zxing:core:3.5.3'
+}
+
+
