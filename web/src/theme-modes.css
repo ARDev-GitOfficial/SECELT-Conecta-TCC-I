@@ -59,7 +59,7 @@ html[data-theme="dark"] body {
   -webkit-backdrop-filter: blur(18px) saturate(155%);
   backdrop-filter: blur(18px) saturate(155%);
 }
-.liquid-target > :not(canvas) { position: relative; z-index: 1; }
+.liquid-target > :not(canvas):not(.stat-icon) { position: relative; z-index: 1; }
 .liquid-target > canvas { z-index: 0 !important; border-radius: inherit; }
 .liquid-fallback {
   background: linear-gradient(140deg, #ffffffbd, #c7eaff83) !important;
@@ -86,6 +86,11 @@ html[data-theme="dark"] .liquid-fallback {
 .stat-scene { inset: -8px; background: radial-gradient(ellipse at 18% 10%, #74cdff22, transparent 45%); filter: blur(14px); }
 .nav-scene { inset: 0; background: radial-gradient(ellipse at 50% 0%, #9ce7ff34, transparent 72%); filter: blur(12px); }
 .modal-scene { inset: 2% 8%; background: radial-gradient(ellipse at 50% 28%, #82daf12c, transparent 68%); filter: blur(28px); }
+.quick-grid, .stat-grid { isolation: isolate; }
+.quick-grid .tile-scene { inset: 3px 0; border-radius: 24px; }
+.stat-grid .stat-scene { inset: 0; border-radius: 18px; }
+html[data-theme="dark"] .quick-grid .tile-scene { background: radial-gradient(ellipse at 28% 22%, #35c8ff40, transparent 57%), radial-gradient(ellipse at 72% 82%, #20d6a72e, transparent 48%); }
+html[data-theme="dark"] .stat-grid .stat-scene { background: radial-gradient(ellipse at 18% 10%, #47cfff39, transparent 56%), radial-gradient(ellipse at 90% 90%, #39d6a51f, transparent 48%); }
 .hero-copy { isolation: isolate; }
 .hero-copy > :not(.liquid-scene) { position: relative; }
 .quick-card, .stat-card, .event-modal, .bottom-nav-glass { background: transparent !important; }
@@ -235,9 +240,6 @@ html[data-theme="dark"] .toast { color: #e7f8ff; background: #153a50; border-col
   .hero-scene { inset: -4px -7px -8px -8px; }
   .water-orb { top: 13%; right: 5%; width: clamp(102px, 34vw, 138px); }
   html[data-theme="dark"] .bottom-nav-glass { border-color: #b4eaff5c !important; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .water-orb, .water-orb::after { animation: none !important; }
 }
 html[data-theme="dark"] .liquid-target { background: transparent !important; }
 html[data-theme="dark"] .event-modal.liquid-target { background: #152c3f80 !important; }

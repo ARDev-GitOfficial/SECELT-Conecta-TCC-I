@@ -13,15 +13,16 @@ android {
     kotlinOptions { jvmTarget = "17" }
     defaultConfig {
         applicationId 'br.gov.secel.conecta'
-        minSdk 23
+        minSdk 24
         targetSdk 35
-        versionCode 3
-        versionName '0.3.0'
+        versionCode 4
+        versionName '0.4.0'
     }
 }
 
 dependencies {
     implementation 'com.google.zxing:core:3.5.3'
+    implementation 'com.github.QWEA0:liquidglass:v2.0.11'
 }
 
 

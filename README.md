@@ -1,6 +1,6 @@
 # SECELT Conecta
 
-Aplicação para gestão e divulgação das atividades da Secretaria Municipal de Esporte, Cultura, Lazer e Turismo de São Miguel do Guamá — PA. Este repositório contém um protótipo acadêmico navegável, com site React, aplicativo Android nativo em Kotlin e API com banco relacional persistente. A identidade visual usa azul e branco como referência institucional, com destaques em verde e formas gráficas autorais para representar a cidade.
+Aplicação para gestão e divulgação das atividades da Secretaria Municipal de Esporte, Cultura, Lazer e Turismo de São Miguel do Guamá — PA. Este repositório contém uma construção acadêmica navegável, com site React, aplicativo Android nativo em Kotlin e API com banco relacional persistente. A identidade visual usa azul e branco como referência institucional, com destaques em verde e formas gráficas autorais para representar a cidade.
 
 > Projeto acadêmico. Eventos, equipes, placares e nomes administrativos pré-carregados são dados de exemplo. As contas e senhas descritas aqui são exclusivamente para demonstração local. Não publique a API desta versão na internet sem trocar credenciais, configurar HTTPS e revisar controles de acesso.
 
@@ -10,10 +10,10 @@ Aplicação para gestão e divulgação das atividades da Secretaria Municipal d
 - **App Android:** Kotlin nativo; lê eventos, competições, equipes e pontos turísticos da mesma API; inscrições gratuitas geram QR Code.
 - **API:** Node.js 24, HTTP JSON, login por perfil Editor SECELT/Administrador Geral e controle de sessão.
 - **Banco:** SQLite local em `data/secelt.sqlite`, persistente, relacional e inicializado automaticamente com dados demonstrativos.
-- **Identidade visual:** marca original em SVG, navegação com refração Liquid Glass, gradiente reativo à rolagem e movimento com suporte a preferência por movimento reduzido.
+- **Identidade visual:** marca original, navegação e cartões com refração Liquid Glass, brilho reativo ao toque, movimento contínuo e temas claro/escuro.
 - **Fluxo editorial:** Rascunho → Aguardando Aprovação → Publicado → Encerrado/Cancelado, com histórico de transições. Conteúdo publicado atualiza o carimbo do calendário e cria nota no feed.
 
-O calendário cidadão permite navegar por mês e consultar eventos publicados, encerrados e cancelados. O painel permite organizar eventos, calendário, competições, equipes, inscrições e pontos turísticos seguindo os perfis Editor SECELT e Administrador Geral. A galeria turística inclui fotos com créditos, endereço e atalho para abrir o ponto em um aplicativo de mapas.
+O calendário cidadão permite navegar por mês e consultar eventos publicados, encerrados e cancelados. O painel permite organizar eventos, calendário, competições, equipes, inscrições e pontos turísticos seguindo os perfis Editor SECELT e Administrador Geral. A galeria turística inclui fotos com créditos, endereço e atalho para abrir o ponto em um aplicativo de mapas. O aplicativo Android usa superfícies Liquid Glass interativas e ícones vetoriais Lucide.
 
 O modelo cobre perfis e usuários administrativos, eventos, cidadãos, inscrições/QR Code, competições, equipes, integrantes, partidas, pontos turísticos, notícias e histórico de aprovação. Pagamentos não estão implementados.
 
@@ -58,9 +58,16 @@ O Editor cria eventos, salva rascunhos e envia seus próprios itens para aprova�
 
 ## Aplicativo Android
 
-O projeto nativo fica em `android/`. O APK instalável de demonstração está em [`SECELT-Conecta-demo.apk`](SECELT-Conecta-demo.apk), assinado com a chave de depuração do Android. No emulador, o endereço padrão `http://10.0.2.2:4173` aponta para a API no computador. No celular, inicie o servidor, conecte os dispositivos à mesma rede Wi-Fi e configure o IP local do computador nas opções do app.
+O projeto nativo fica em `android/`. O APK v0.4.0 instalável para apresentação está em [`SECELT-Conecta-demo.apk`](SECELT-Conecta-demo.apk), assinado com a chave de depuração do Android e compatível com Android 7.0 ou superior. A refração de lente usa AGSL no Android 13+ e uma composição clássica em versões anteriores.
 
-O aplicativo consulta a mesma API. No emulador Android, o endereço padrão `http://10.0.2.2:4173` aponta para o computador. Em um celular físico, inicie o servidor no computador e altere a conexão pelo botão de configurações do app, informando o IP local dele e a porta `4173`. Os dois dispositivos precisam estar na mesma rede.
+Para gerar outro APK no Windows:
+
+```powershell
+cd android
+.\gradlew.bat assembleDebug
+```
+
+O arquivo será gerado em `android/app/build/outputs/apk/debug/app-debug.apk`. No emulador, o endereço padrão `http://10.0.2.2:4173` aponta para a API no computador. Em um celular físico, inicie o servidor, conecte os dispositivos à mesma rede Wi-Fi e configure o IP local do computador nas opções do app.
 
 ## Prévia visual
 

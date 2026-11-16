@@ -3,9 +3,17 @@ package br.gov.secel.conecta
 import android.app.Activity
 import android.app.AlertDialog
 import android.animation.ArgbEvaluator
+import android.animation.ValueAnimator
+import android.content.Context
+import android.content.res.ColorStateList
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.Path
+import android.graphics.RadialGradient
+import android.graphics.Shader
 import android.graphics.Typeface
 import android.content.Intent
 import android.net.Uri
@@ -19,7 +27,11 @@ import android.text.style.URLSpan
 import android.view.Gravity
 import android.view.View
 import android.view.WindowInsets
+import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.*
+import com.example.liquidglass.GlassAccessibilityMode
+import com.example.liquidglass.GlassMaterial
+import com.example.liquidglass.LiquidGlassView
 import org.json.JSONArray
 import org.json.JSONObject
 import com.google.zxing.BarcodeFormat
@@ -46,7 +58,10 @@ class MainActivity : Activity() {
     private val panelColor get() = if (darkMode) Color.rgb(17, 38, 56) else Color.WHITE
     private val lineColor get() = if (darkMode) Color.rgb(41, 71, 92) else Color.rgb(217, 229, 236)
     private val executor = Executors.newSingleThreadExecutor()
+    private val surfaceAnimators = mutableSetOf<ValueAnimator>()
     private lateinit var content: LinearLayout
+    private lateinit var liquidBackdrop: WaterBackdropView
+    private val navItems = mutableListOf<Pair<String, LinearLayout>>()
     private lateinit var pageTitle: TextView
     private lateinit var pageSummary: TextView
     private var page = "Início"
@@ -71,15 +86,20 @@ class MainActivity : Activity() {
     }
 
     private fun buildShell() {
-        val root = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL; setBackgroundColor(pageColor) }
-        val top = LinearLayout(this).apply { gravity = Gravity.CENTER_VERTICAL; setPadding(dp(14), dp(8), dp(14), dp(8)); background = glassSurface(panelColor, 16f); elevation = dp(2).toFloat() }
+        val shell = FrameLayout(this).apply { setBackgroundColor(pageColor) }
+        liquidBackdrop = WaterBackdropView(this)
+        shell.addView(liquidBackdrop, FrameLayout.LayoutParams(-1, -1))
+        val root = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL; setBackgroundColor(Color.TRANSPARENT) }
+        shell.addView(root, FrameLayout.LayoutParams(-1, -1))
+        val topContent = LinearLayout(this).apply { gravity = Gravity.CENTER_VERTICAL; setPadding(dp(14), dp(8), dp(14), dp(8)); setBackgroundColor(Color.TRANSPARENT) }
+        val top = liquidGlass(topContent, 16f)
         val badge = ImageView(this).apply { setImageResource(R.drawable.secelt_mark); contentDescription = "SECELT Conecta" }
         val name = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL; setPadding(10, 0, 0, 0) }
         name.addView(label("SECELT", 14, ink, true)); name.addView(label("CONECTA", 9, muted, true))
-        top.addView(badge, LinearLayout.LayoutParams(dp(42), dp(42))); top.addView(name, LinearLayout.LayoutParams(0, -2, 1f))
+        topContent.addView(badge, LinearLayout.LayoutParams(dp(42), dp(42))); topContent.addView(name, LinearLayout.LayoutParams(0, -2, 1f))
         val settings = Button(this).apply { text = "⚙"; textSize = 16f; setTextColor(blue); setBackgroundColor(Color.TRANSPARENT); setOnClickListener { apiSettings() } }
         val themeButton = Button(this).apply { text = if (darkMode) "☀" else "◐"; textSize = 17f; contentDescription = if (darkMode) "Ativar tema claro" else "Ativar tema escuro"; setTextColor(blue); setBackgroundColor(Color.TRANSPARENT); setOnClickListener { getSharedPreferences("settings", MODE_PRIVATE).edit().putBoolean("dark", !darkMode).apply(); recreate() } }
-        top.addView(themeButton); top.addView(settings); root.addView(top, LinearLayout.LayoutParams(-1, -2).apply { setMargins(dp(12), dp(8), dp(12), dp(8)) })
+        topContent.addView(themeButton); topContent.addView(settings); root.addView(top, LinearLayout.LayoutParams(-1, -2).apply { setMargins(dp(12), dp(8), dp(12), dp(8)) })
         val header = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL; setPadding(dp(20), dp(18), dp(20), dp(17)); background = GradientDrawable(GradientDrawable.Orientation.TL_BR, intArrayOf(if (darkMode) Color.rgb(11, 65, 105) else blue, if (darkMode) Color.rgb(9, 43, 70) else Color.rgb(8, 75, 137))).apply { cornerRadius = dp(21).toFloat() }; elevation = dp(4).toFloat() }
         pageTitle = label("Agenda e informações", 21, Color.WHITE, true); header.addView(pageTitle)
         pageSummary = label("Destaques e calendário oficial", 12, Color.rgb(225, 239, 248)); header.addView(pageSummary)
@@ -92,27 +112,33 @@ class MainActivity : Activity() {
             val end = ArgbEvaluator().evaluate(progress, if (darkMode) Color.rgb(9, 43, 70) else Color.rgb(8, 75, 137), if (darkMode) Color.rgb(10, 52, 80) else Color.rgb(9, 83, 145)) as Int
             header.background = GradientDrawable(GradientDrawable.Orientation.TL_BR, intArrayOf(start, end)).apply { cornerRadius = dp(26).toFloat() }
         }
-        val nav = LinearLayout(this).apply { gravity = Gravity.CENTER; background = glassSurface(panelColor, 20f); elevation = dp(4).toFloat(); setPadding(dp(5), dp(4), dp(5), dp(4)) }
+        val navContent = LinearLayout(this).apply { orientation = LinearLayout.HORIZONTAL; gravity = Gravity.CENTER; setBackgroundColor(Color.TRANSPARENT); setPadding(dp(5), dp(4), dp(5), dp(4)) }
+        val nav = liquidGlass(navContent, 20f)
+        navItems.clear()
         listOf("Início", "Esporte", "Eventos", "Turismo").forEachIndexed { index, item ->
-            val glyph = listOf("⌂", "⚽", "▦", "⌖")[index]
+            val icon = listOf(R.drawable.ic_home, R.drawable.ic_trophy, R.drawable.ic_calendar, R.drawable.ic_map_pin)[index]
             val selected = item == page
-            nav.addView(TextView(this).apply {
-                text = "$glyph\n$item"; contentDescription = item; gravity = Gravity.CENTER
-                textSize = 10f; maxLines = 2; setTextColor(if (selected) brandStrong else muted)
-                isClickable = true; isFocusable = true; setPadding(dp(4), dp(2), dp(4), dp(2))
+            val itemView = LinearLayout(this).apply {
+                orientation = LinearLayout.VERTICAL; gravity = Gravity.CENTER; contentDescription = item
+                isClickable = true; isFocusable = true; setPadding(dp(4), dp(4), dp(4), dp(4))
                 background = GradientDrawable().apply { cornerRadius = dp(14).toFloat(); setColor(if (selected) brandSoft else Color.TRANSPARENT) }
                 setOnClickListener { page=item; render() }
-            }, LinearLayout.LayoutParams(0, dp(50), 1f).apply { setMargins(dp(2), 0, dp(2), 0) })
+            }
+            val iconView = ImageView(this).apply { setImageResource(icon); imageTintList = ColorStateList.valueOf(if (selected) brandStrong else muted); contentDescription = null }
+            itemView.addView(iconView, LinearLayout.LayoutParams(dp(18), dp(18)))
+            itemView.addView(label(item, 10, if (selected) brandStrong else muted, selected))
+            navItems.add(item to itemView)
+            navContent.addView(itemView, LinearLayout.LayoutParams(0, dp(52), 1f).apply { setMargins(dp(2), 0, dp(2), 0) })
         }
         root.addView(nav, LinearLayout.LayoutParams(-1, -2).apply { setMargins(dp(12), dp(8), dp(12), dp(8)) })
-        root.setOnApplyWindowInsetsListener { view, insets ->
+        shell.setOnApplyWindowInsetsListener { view, insets ->
             val topInset = if (Build.VERSION.SDK_INT >= 30) insets.getInsets(WindowInsets.Type.statusBars()).top else insets.systemWindowInsetTop
             val bottomInset = if (Build.VERSION.SDK_INT >= 30) insets.getInsets(WindowInsets.Type.navigationBars()).bottom else insets.systemWindowInsetBottom
             view.setPadding(0, topInset, 0, bottomInset)
             insets
         }
-        setContentView(root)
-        root.requestApplyInsets()
+        setContentView(shell)
+        shell.requestApplyInsets()
     }
     private fun loadAll() {
         content.removeAllViews(); content.addView(label("Atualizando informações…", 13, muted))
@@ -133,6 +159,12 @@ class MainActivity : Activity() {
     private fun post(path: String, body: JSONObject): JSONObject { val c=URL(baseUrl+path).openConnection() as HttpURLConnection; c.connectTimeout=5000;c.readTimeout=7000;c.requestMethod="POST";c.doOutput=true;c.setRequestProperty("Content-Type","application/json");OutputStreamWriter(c.outputStream).use{it.write(body.toString())};val text=(if(c.responseCode in 200..299)c.inputStream else c.errorStream).bufferedReader().use{it.readText()};if(c.responseCode !in 200..299)throw Exception(JSONObject(text).optString("error","Falha ao salvar inscrição."));return JSONObject(text) }
     private fun render() {
         content.removeAllViews()
+        navItems.forEach { (name, itemView) ->
+            val selected = name == page
+            itemView.background = GradientDrawable().apply { cornerRadius = dp(14).toFloat(); setColor(if (selected) brandSoft else Color.TRANSPARENT) }
+            (itemView.getChildAt(0) as? ImageView)?.imageTintList = ColorStateList.valueOf(if (selected) brandStrong else muted)
+            (itemView.getChildAt(1) as? TextView)?.apply { setTextColor(if (selected) brandStrong else muted); typeface = if (selected) Typeface.DEFAULT_BOLD else Typeface.DEFAULT }
+        }
         pageTitle.text = when(page) { "Início" -> "Agenda e informações"; "Esporte" -> "Esporte"; "Eventos" -> "Calendário de eventos"; else -> "Turismo" }
         pageSummary.text = when(page) { "Início" -> "Destaques e calendário oficial"; "Esporte" -> "Competições, equipes e resultados"; "Eventos" -> "Agenda e informações de inscrição"; else -> "Pontos de interesse e acesso ao Maps" }
         when(page) { "Início" -> home(); "Esporte" -> sports(); "Eventos" -> events(); else -> tourism() }
@@ -300,9 +332,10 @@ class MainActivity : Activity() {
     private fun eventCard(e: JSONObject) {
         val card = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL; setPadding(dp(12), dp(12), dp(12), dp(12))
-            background = glassSurface(panelColor, 18f); elevation = dp(3).toFloat()
+            setBackgroundColor(Color.TRANSPARENT)
             setOnClickListener { eventDetails(e) }
         }
+        val glass = liquidGlass(card, 18f)
         val image = ImageView(this).apply { scaleType = ImageView.ScaleType.CENTER_CROP; contentDescription = "Imagem de referência do evento" }
         card.addView(image, LinearLayout.LayoutParams(-1, dp(118)))
         val photo = if (e.optString("category") == "Esporte") "/assets/sports-field.jpg" else "/assets/culture-stage.jpg"
@@ -315,14 +348,15 @@ class MainActivity : Activity() {
         card.addView(label(e.optString("title"), 17, ink, true))
         card.addView(label("${e.optString("startsAt").drop(11).take(5)}  ·  ${e.optString("location")}", 11, bodyText))
         card.addView(label("${e.optString("status", "Publicado")}  ·  ${if (e.optBoolean("isFree")) "Gratuito" else "Pago"}", 10, if (e.optString("status") == "Cancelado") muted else green, true))
-        content.addView(card, margin(0, 0, 0, dp(10)))
+        content.addView(glass, margin(0, 0, 0, dp(10)))
     }
 
     private fun tourismPhotoCard(point: JSONObject, index: Int) {
         val card = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL; setPadding(dp(12), dp(12), dp(12), dp(12))
-            background = glassSurface(panelColor, 20f); elevation = dp(3).toFloat()
+            setBackgroundColor(Color.TRANSPARENT)
         }
+        val glass = liquidGlass(card, 20f)
         val image = ImageView(this).apply { scaleType = ImageView.ScaleType.CENTER_CROP; contentDescription = point.optString("name") }
         card.addView(image, LinearLayout.LayoutParams(-1, dp(if (index % 2 == 0) 190 else 158)))
         val credit = label("Foto de referência · carregando…", 9, muted)
@@ -338,7 +372,7 @@ class MainActivity : Activity() {
             setOnClickListener { openMap(point) }
         }
         card.addView(mapButton, margin(0, dp(8), 0, 0))
-        content.addView(card, margin(0, dp(4), 0, dp(12)))
+        content.addView(glass, margin(0, dp(4), 0, dp(12)))
     }
 
     private fun loadPhoto(path: String, image: ImageView, pointId: String? = null, placeId: String? = null, creditView: TextView? = null) {
@@ -449,11 +483,12 @@ class MainActivity : Activity() {
     private fun card(title:String,subtitle:String,onClick:()->Unit) {
         val box=LinearLayout(this).apply {
             orientation=LinearLayout.VERTICAL; setPadding(dp(16),dp(13),dp(16),dp(13))
-            background=glassSurface(panelColor,16f); elevation=dp(2).toFloat()
+            setBackgroundColor(Color.TRANSPARENT)
             isClickable=true; isFocusable=true; setOnClickListener{onClick()}
         }
+        val glass=liquidGlass(box,16f)
         box.addView(label(title,16,ink,true)); box.addView(label(subtitle,12,muted))
-        content.addView(box,margin(0,dp(5),0,dp(5)))
+        content.addView(glass,margin(0,dp(5),0,dp(5)))
     }
     private fun showCompetition(id:String,name:String){
         val teams=cachedSports.optJSONArray("teams")?:JSONArray()
@@ -504,11 +539,90 @@ class MainActivity : Activity() {
         if (bold) typeface = Typeface.DEFAULT_BOLD
         setPadding(0, dp(4), 0, dp(4))
     }
+    private fun liquidGlass(contentView: View, radiusDp: Float): LiquidGlassView {
+        val glass = LiquidGlassView(this).apply {
+            clipChildren = false
+            clipToPadding = false
+            cornerRadius = dp(radiusDp).toFloat()
+            material = GlassMaterial.REGULAR
+            accessibilityMode = GlassAccessibilityMode.FORCE_FULL
+            enablePressEffect = true
+            enableSensorHighlight = true
+            enableAdaptiveTint = true
+            enableDynamicBackground = false
+            refractionHeight = dp(16f).toFloat()
+            bevelWidth = dp(24f).toFloat()
+            refractionFalloff = 1.8f
+            dispersionStrength = .12f
+            blurAmount = .085f
+            saturation = 138f
+            aberrationIntensity = 1.6f
+            displacementScale = 68f
+            elasticity = .22f
+            enableEdgeHighlight = true
+            edgeHighlightOpacity = 76f
+            setGlassTint(if (darkMode) Color.rgb(53, 142, 193) else Color.rgb(221, 243, 251), if (darkMode) .24f else .2f)
+            backdropSource = liquidBackdrop
+            addView(contentView, FrameLayout.LayoutParams(-1, -2))
+        }
+        val lens = if (Build.VERSION.SDK_INT >= 33) ValueAnimator.ofFloat(dp(13f).toFloat(), dp(21f).toFloat())
+            else ValueAnimator.ofFloat(58f, 76f)
+        lens.duration = 7200L
+        lens.repeatCount = ValueAnimator.INFINITE
+        lens.repeatMode = ValueAnimator.REVERSE
+        lens.interpolator = AccelerateDecelerateInterpolator()
+        lens.addUpdateListener { animator ->
+            val value = animator.animatedValue as Float
+            if (Build.VERSION.SDK_INT >= 33) glass.refractionHeight = value else glass.displacementScale = value
+        }
+        glass.addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener {
+            override fun onViewAttachedToWindow(view: View) { surfaceAnimators.add(lens); lens.start() }
+            override fun onViewDetachedFromWindow(view: View) { lens.cancel(); surfaceAnimators.remove(lens) }
+        })
+        return glass
+    }
+
     private fun glassSurface(color: Int, radiusDp: Float) = GradientDrawable().apply {
         shape = GradientDrawable.RECTANGLE
         cornerRadius = dp(radiusDp).toFloat()
-        setColor(color)
-        setStroke(dp(1), lineColor)
+        val tinted = if (Color.alpha(color) < 255) color else Color.argb(if (darkMode) 210 else 220, Color.red(color), Color.green(color), Color.blue(color))
+        setColor(tinted)
+        setStroke(dp(1), if (darkMode) 0x557fe4ff else 0x44ffffff)
+    }
+    override fun onDestroy() {
+        surfaceAnimators.toList().forEach { it.cancel() }
+        surfaceAnimators.clear()
+        executor.shutdownNow()
+        super.onDestroy()
+    }
+
+    private inner class WaterBackdropView(context: Context) : View(context) {
+        private val paint = Paint(Paint.ANTI_ALIAS_FLAG)
+        private val wave = Path()
+        override fun onDraw(canvas: Canvas) {
+            super.onDraw(canvas)
+            val w = width.toFloat(); val h = height.toFloat()
+            canvas.drawColor(if (darkMode) Color.rgb(8, 23, 37) else Color.rgb(235, 244, 248))
+            paint.shader = RadialGradient(w * .08f, h * .16f, h * .66f,
+                intArrayOf(if (darkMode) 0x552f9ecf else 0x4463b8d9, Color.TRANSPARENT), null, Shader.TileMode.CLAMP)
+            canvas.drawCircle(w * .08f, h * .16f, h * .66f, paint)
+            paint.shader = RadialGradient(w * .94f, h * .78f, h * .58f,
+                intArrayOf(if (darkMode) 0x3325bc9c else 0x3346b89b, Color.TRANSPARENT), null, Shader.TileMode.CLAMP)
+            canvas.drawCircle(w * .94f, h * .78f, h * .58f, paint)
+            paint.shader = null
+            paint.style = Paint.Style.STROKE
+            paint.strokeWidth = dp(2f).toFloat()
+            paint.color = if (darkMode) 0x235ad3ee else 0x226aaec2
+            wave.reset(); wave.moveTo(-w * .1f, h * .32f)
+            wave.cubicTo(w * .28f, h * .22f, w * .52f, h * .48f, w * 1.12f, h * .34f)
+            canvas.drawPath(wave, paint)
+            paint.strokeWidth = dp(1f).toFloat()
+            paint.color = if (darkMode) 0x1b5ce1b5 else 0x1d55b991
+            wave.reset(); wave.moveTo(-w * .08f, h * .7f)
+            wave.cubicTo(w * .36f, h * .58f, w * .61f, h * .84f, w * 1.08f, h * .64f)
+            canvas.drawPath(wave, paint)
+            paint.style = Paint.Style.FILL
+        }
     }
     private fun dp(value: Float) = (value * resources.displayMetrics.density).toInt()
     private fun dp(value: Int) = (value * resources.displayMetrics.density).toInt()

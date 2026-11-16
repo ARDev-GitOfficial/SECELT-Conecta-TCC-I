@@ -197,13 +197,6 @@ body {
   .admin-top { position: relative; margin: 0 0 16px; padding: 0 0 13px; background: transparent; backdrop-filter: none; }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  body { transition: none; }
-  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; }
-  .motion-ready .reveal-on-scroll { opacity: 1; transform: none; }
-}
-
 @supports not ((backdrop-filter: blur(1px))) {
   .topbar, .bottom-nav-glass, .admin-sidebar, .admin-top, .event-modal.liquid-sheet { background-color: #eef8fcf5; }
   .bottom-nav-glass, .event-modal.liquid-sheet { opacity: .98; }
