@@ -25,7 +25,4 @@ Testes com `node --test tests/*.test.mjs`. No site, abra **Baixar app** para bai
 | [`tests`](tests) | Testes de integração e regras do feed |
 
 ## Netlify
-
-Importe este repositório do GitHub com a branch `main`. O `netlify.toml` configura o build, o catálogo público de demonstração e o download do APK. No Android, informe o endereço do site em **Conexão do sistema**.
-
-Para usar o painel e receber inscrições online, hospede a API com armazenamento persistente e configure `SECELT_API_ORIGIN` no Netlify.
+Acesse: https://secelt-conecta-demo.netlify.app/
