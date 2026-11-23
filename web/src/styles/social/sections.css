@@ -1,0 +1,67 @@
+.sg-legacy-toolbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+.sg-legacy-toolbar>span { font-size: 8px; color: var(--sg-muted); letter-spacing: .1em; }
+.sg-legacy .page-banner {
+  border: 1px solid var(--sg-line);
+  border-radius: 24px;
+  overflow: hidden;
+  min-height: 230px;
+  margin: 0;
+  box-shadow: var(--sg-shadow);
+  background: var(--sg-glass);
+}
+.sg-legacy .page-banner h1 { font-size: 36px; line-height: 1.12; }
+.sg-legacy .section-wrap { width: 100%; max-width: none; padding-left: 0; padding-right: 0; }
+.sg-legacy .content-section { padding-top: 24px; }
+.sg-legacy .page-banner .sports-banner-copy { padding: 28px; }
+.sg-legacy .page-banner.events-banner,.sg-legacy .page-banner.tourism-banner { padding-left: 28px; padding-right: 28px; }
+.sg-legacy .event-details {
+  padding: 28px;
+  border: 1px solid var(--sg-line);
+  border-top-color: var(--sg-rim);
+  border-radius: 23px;
+  background: var(--sg-glass);
+  backdrop-filter: blur(22px);
+}
+.sg-legacy .event-details>h2 { font-size: 29px; letter-spacing: -.035em; }
+.sg-legacy .event-details>p { font-size: 13px; line-height: 1.8; }
+.sg-legacy :is(.panel,.calendar-month,.day-agenda,.event-row,.place-card,.tourism-point-row,.tourism-filters) {
+  background: var(--sg-glass)!important;
+  border-color: var(--sg-line);
+  backdrop-filter: blur(18px);
+}
+.sg-legacy .day-agenda { border-radius: 19px; }
+.sg-legacy .sport-layout { grid-template-columns: minmax(0,1fr) minmax(240px,.7fr); gap: 15px; }
+.sg-legacy .results { max-width: 100%; }
+.sg-legacy .result-row { grid-template-columns: 115px minmax(0,1fr) 65px minmax(0,1fr) 78px; gap: 10px; }
+.sg-legacy .event-calendar-page { grid-template-columns: minmax(0,1fr) minmax(260px,.85fr); gap: 19px; }
+.sg-legacy .calendar-toolbar { gap: 12px; }
+.sg-legacy .search-box { max-width: 260px; }
+.sg-legacy .event-row { padding: 13px; gap: 12px; }
+.sg-legacy .event-info>b { font-size: 13px; }
+.sg-legacy .place-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+.sg-legacy .detail-grid { gap: 15px; }
+.sg-legacy .event-detail-photo { margin-top: 18px; }
+.sg-legacy .register-form input { background: var(--surface-strong); color: var(--sg-text); border-color: var(--sg-line); }
+html[data-appearance="black"] .shell :is(.admin-sidebar,.admin-top,.topbar,.admin-main,.login-card,.login-page) {
+  background: var(--sg-bg)!important;
+}
+html[data-appearance] .shell :is(.admin-panel,.table-toolbar,.admin-calendar,.login-form input,.event-form input,.event-form textarea,.event-form select,.event-modal) {
+  color: var(--sg-text);
+  background-color: var(--surface-strong)!important;
+  border-color: var(--sg-line);
+}
+html[data-appearance="black"] .shell :is(.admin-logo,.table-panel,.admin-layout,.welcome-row,.calendar-panel,.queue-panel) {
+  color: var(--sg-text);
+  background-color: transparent;
+}
+.shell .toast {
+  z-index: 220;
+  bottom: 26px;
+  background: var(--surface-strong);
+  color: var(--sg-text);
+  border: 1px solid var(--sg-rim);
+  border-radius: 13px;
+  box-shadow: 0 8px 36px #0006;
+  max-width: calc(100vw - 36px);
+  font-size: 12px;
+}

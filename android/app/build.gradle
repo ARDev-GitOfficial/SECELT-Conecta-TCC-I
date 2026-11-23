@@ -3,9 +3,23 @@ plugins {
     id 'org.jetbrains.kotlin.android'
 }
 
+def portalApiUrl = providers.gradleProperty('portalApiUrl')
+    .orElse('http://10.0.2.2:4173')
+    .get()
+    .trim()
+    .replaceFirst('/+$', '')
+def portalAddress = new URI(portalApiUrl)
+if (!(portalAddress.scheme in ['http', 'https']) || !portalAddress.host || portalAddress.userInfo ||
+    portalAddress.path || portalAddress.query != null || portalAddress.fragment != null) {
+    throw new GradleException('portalApiUrl deve ser a origem HTTP ou HTTPS do portal.')
+}
+
 android {
     namespace 'br.gov.secel.conecta'
     compileSdk 35
+    buildFeatures {
+        buildConfig true
+    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
@@ -15,8 +29,9 @@ android {
         applicationId 'br.gov.secel.conecta'
         minSdk 24
         targetSdk 35
-        versionCode 4
-        versionName '0.4.0'
+        versionCode 5
+        versionName '0.4.1'
+        buildConfigField 'String', 'PORTAL_API_URL', "\"$portalApiUrl\""
     }
 }
 

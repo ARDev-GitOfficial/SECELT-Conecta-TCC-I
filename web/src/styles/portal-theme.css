@@ -1,0 +1,191 @@
+.prototype-strip {
+  min-height: 29px;
+  padding: 5px max(calc((100vw - 1240px)/2),24px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #edf0f2;
+  border-bottom: 1px solid #d9dee2;
+  color: #465563;
+  font-size: 8px;
+  letter-spacing: .11em;
+}
+.prototype-strip>span { font-weight: 750; }
+.prototype-strip i { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 7px; background: #2e8b3d; }
+.prototype-strip small { font-size: 8px; letter-spacing: .04em; color: #7d8993; }
+body { background: #f0f2f3; color: #202b35; }
+.topbar { box-shadow: none; }
+.hero-foot,.hero-ribbon { color: #566573; }
+.hero-foot span { color: #2e8b3d; }
+.hero-land,.feature-land,.court,.town,.place-art,.admin-art { background: #c9ced2!important; }
+.art { background: #c9ced2!important; border: 1px solid #b9c0c5; isolation: isolate; }
+.art:before { inset: 0; background: repeating-linear-gradient(135deg,transparent 0 18px,#ffffff3b 19px 20px); opacity: .65; }
+.art .sun { background: #e7e9eb; box-shadow: none; border: 1px solid #aab2b9; }
+.art .hill {
+  border-radius: 0;
+  background: #aeb6bc!important;
+  opacity: .85;
+  clip-path: polygon(0 48%,35% 0,62% 42%,83% 14%,100% 55%,100% 100%,0 100%);
+}
+.art .h2 { background: #bbc2c7!important; transform: none; }
+.art .river {
+  border-radius: 0;
+  background: #d8dcdf!important;
+  opacity: 1;
+  clip-path: polygon(0 36%,100% 0,76% 100%,20% 100%);
+  transform: none;
+}
+.art-label { font-size: 0!important; letter-spacing: .11em; color: #58636b!important; text-shadow: none!important; }
+.art-label:after { content: 'ÁREA DE IMAGEM'; font-size: 8px; }
+.hero-land .sun,.feature-land .sun { box-shadow: none; }
+.hero-land .hill,.feature-land .hill { border-radius: 0; }
+.hero-ribbon { right: max(calc((100vw - 1160px)/2),7vw); }
+.panel,.admin-panel,.stat-card,.place-card { border-radius: 0; box-shadow: none; }
+.section-heading h2,.panel h2,.event-filter h2,.feature-text h2,.place-title { color: #27343f; }
+.feature-image,.news-art { background: #d4d9dd; }
+.feature-text h2 em { color: #0d5ba6; }
+.green-text,.sport-note span { color: #2e8b3d; }
+.news-section { background: #eceff0; }
+.news-art { filter: grayscale(1); }
+.page-banner,.sports-banner { background: #dfe3e6; color: #25313c; }
+.page-banner h1 { color: #25313c; }
+.page-banner h1 em { color: #0d5ba6; }
+.page-banner p { color: #5c6974; opacity: 1; }
+.events-banner,.tour-intro { background: #e6e9eb; color: #25313c; }
+.events-banner h1 em,.tour-intro h1 em { color: #0d5ba6; }
+.calendar-update { border-color: #cbd2d7; box-shadow: none; }
+.tabs button.selected { border-color: #0d5ba6; color: #0d5ba6; }
+.live-tag,.queue-count,.pending-tag { background: #f1f2f3; border: 1px solid #d6dade; color: #566573; }
+.team-badge,.team-badge.alt { border-radius: 2px; background: #bfc6cb; color: #263744; }
+.event-row { border-bottom-color: #d3d8dc; }
+.event-row:hover { background: #fff; }
+.date-block { border-radius: 0; background: #e6edf3; color: #0d5ba6; }
+.free-tag { border-radius: 0; color: #2e8b3d; }
+.button,.admin-entry,.filter-button,.outline,.event-modal,.login-card,.login-form input,.event-form input,.event-form select,.event-form textarea,.register-form input {
+  border-radius: 2px;
+}
+.button.blue,.button.green-button,.approve { background: #0d5ba6; }
+.button.green-button { background: #2e8b3d; }
+.approve { background: #2e8b3d!important; }
+.admin-sidebar { box-shadow: none; }
+.approval-thumb,.place-card .art { filter: grayscale(1); }
+.place-card { border: 1px solid #d3d8dc; }
+.place-index,.gallery-head { color: #606e78; }
+.masonry .place-card:after { box-shadow: none; }
+.modal-scrim { background: #4c58637a; }
+.event-modal { border-radius: 2px 2px 0 0; }
+.success-check { border-radius: 2px; background: #e8f0e9; color: #2e8b3d; }
+.ticket-modal canvas { box-shadow: none; border: 1px solid #cbd2d7; }
+@media(max-width:600px) {
+  .prototype-strip { padding: 5px 14px; min-height: 27px; }
+  .prototype-strip small { font-size: 7px; }
+  .hero-land .art-label { display: none; }
+  .tour-intro { background: #e6e9eb; }
+}
+:root {
+  --blue: #0874bf;
+  --blue-dark: #075697;
+  --ink: #15334b;
+  --muted: #647b8e;
+  --green: #2e8b3d;
+  --paper: #f2f6f9;
+  --line: #d6e2eb;
+  --white: #fff;
+}
+body { background: #f2f6f9; color: #18364d; font-family: Inter,'Segoe UI',Arial,sans-serif; }
+.topbar { background: #056db6; border-bottom: 1px solid #1883c8; color: white; }
+.brand { color: white; }
+.brand b { letter-spacing: .12em; }
+.brand small { color: #d8efff; }
+.official { color: #e2f2fc; }
+.official i { background: #57d691; }
+.admin-entry { border: 1px solid #ffffff73; background: #ffffff12; color: #fff; border-radius: 7px; }
+.prototype-strip { background: #e7f3fb; border-bottom: 1px solid #c5e0f2; color: #1e5c83; }
+.prototype-strip small { color: #617c90; }
+.hero-foot,.hero-ribbon { color: #d5efff; }
+.hero-ribbon { background: #063e74; border: 1px solid #42a1d6; padding: 8px 11px; border-radius: 20px; }
+.hero-ribbon span { color: #81ecc0; }
+.art {
+  background: linear-gradient(138deg,#8ec8e6 0%,#47a7cf 43%,#0d7b91 44%,#07587a 100%)!important;
+  border: 1px solid #7bc0de;
+  border-radius: 0;
+}
+.art:before {
+  inset: 0;
+  background: linear-gradient(135deg,transparent 42%,#ffffff26 42% 43%,transparent 43%),repeating-linear-gradient(0deg,transparent 0 24px,#ffffff1c 25px 26px),repeating-linear-gradient(90deg,transparent 0 32px,#ffffff13 33px 34px);
+  opacity: .85;
+}
+.art .sun { background: #e5f7ff; border: 0; box-shadow: 0 0 35px #a9ecffb0; }
+.art .hill { background: #167c7e!important; border-radius: 50% 50% 0 0; clip-path: none; opacity: .9; }
+.art .h2 { background: #0b6083!important; transform: rotate(8deg); }
+.art .river {
+  background: linear-gradient(110deg,#9bf3d3,#3dc5bd,#1b8fc3)!important;
+  clip-path: none;
+  border-radius: 48% 15% 0 0;
+  transform: rotate(-22deg);
+  opacity: .93;
+}
+.art-label { color: #fff!important; text-shadow: 0 1px 4px #06436f!important; }
+.art-label:after { content: 'SÃO MIGUEL DO GUAMÁ · PA'; font-size: 8px; }
+.hero-land { background: linear-gradient(145deg,#6ab5dc,#1686bf 52%,#075b8c)!important; }
+.hero-land .art-label { font-size: 0!important; }
+.hero-land .art-label:after { content: 'RIO GUAMÁ · CIDADE EM MOVIMENTO'; font-size: 8px; }
+.quick { padding-top: 50px; }
+.section-heading h2,.panel h2,.event-filter h2,.feature-text h2,.place-title {
+  font-family: Inter,'Segoe UI',Arial,sans-serif;
+  font-weight: 700;
+  letter-spacing: -.025em;
+}
+.feature-text h2 { font-size: 36px; }
+.feature-text h2 em { color: #0874bf; }
+.feature-image { border-right: 1px solid #d4e2eb; }
+.news-section { background: #eaf2f7; }
+.news-art { border-radius: 7px; filter: none; }
+.news-art .art { background: linear-gradient(135deg,#75c3de,#1582bf 58%,#0b5b89)!important; }
+.news-art .court { background: linear-gradient(135deg,#83c7a0,#148f8a 55%,#085f7b)!important; }
+.news-art .town { background: linear-gradient(135deg,#e4c990,#91a890 48%,#0b7397)!important; }
+.page-banner,.sports-banner { background: linear-gradient(115deg,#0874bf,#075697); color: #fff; }
+.page-banner h1 { color: #fff; font-family: Inter,'Segoe UI',Arial,sans-serif; font-weight: 750; }
+.page-banner h1 em { color: #9ef0c9; }
+.page-banner p { color: #e3f2fb; }
+.events-banner,.tour-intro { background: linear-gradient(115deg,#e4f2fb,#f5f9fb); color: #173954; }
+.events-banner h1,.tour-intro h1 { color: #173954; }
+.events-banner h1 em,.tour-intro h1 em { color: #0874bf; }
+.calendar-update { border-color: #c4dfef; border-radius: 8px; box-shadow: 0 3px 12px #14517710; }
+.tabs .selected { border-color: #0874bf; color: #0874bf; }
+.panel,.admin-panel,.stat-card { border-radius: 10px; border-color: #d7e3eb; box-shadow: 0 4px 15px #16466b0a; }
+.next-panel { background: #e8f2f8; }
+.team-badge,.team-badge.alt { border-radius: 50%; background: #0874bf; color: #fff; }
+.team-badge.alt { background: #2e8b3d; }
+.event-row { border-bottom-color: #d7e3eb; border-radius: 8px; padding-left: 12px; padding-right: 12px; }
+.event-row:hover { background: #fff; box-shadow: 0 3px 12px #16466b10; }
+.date-block { border-radius: 8px; background: #e5f2fa; color: #0874bf; }
+.free-tag { border-radius: 20px; background: #edf7ef; }
+.button,.admin-entry,.filter-button,.outline,.login-form input,.event-form input,.event-form select,.event-form textarea,.register-form input {
+  border-radius: 7px;
+}
+.button.blue,.approve { background: #0874bf!important; }
+.button.green-button { background: #2e8b3d!important; }
+.admin-layout { background: #f1f6f9; }
+.admin-sidebar { background: #fff; border-right: 1px solid #d8e5ed; }
+.side-link { border-radius: 7px; }
+.side-link.chosen { background: #e5f2fa; color: #0874bf; }
+.stat-card { background: linear-gradient(145deg,#fff,#fafdff); }
+.stat-card b { color: #0c5f98; }
+.stat-icon.blue-icon { background: #e5f2fa; color: #0874bf; }
+.admin-panel-head h3 { font-family: Inter,'Segoe UI',Arial,sans-serif; font-weight: 700; }
+.queue-count { background: #eaf4fb; border-color: #d1e7f4; color: #286184; }
+.approval-thumb,.place-card .art { filter: none; }
+.place-card { border: 1px solid #d7e3eb; border-radius: 9px; overflow: hidden; box-shadow: 0 4px 15px #16466b0c; }
+.place-title { font-size: 18px; }
+.place-caption { display: flex; justify-content: space-between; }
+.tour-note { color: #41677f; }
+.modal-scrim { background: #0d365688; }
+.event-modal { border-radius: 14px 14px 0 0; }
+.success-check { border-radius: 50%; background: #e7f5eb; color: #2e8b3d; }
+.ticket-modal canvas { box-shadow: 0 4px 16px #163d5b1a; border: 1px solid #d3e2ec; }
+@media(max-width:600px) {
+  .topbar { background: #056db6; }
+  .hero-land .art-label { display: none; }
+  .tour-intro { background: #e7f3fb; }
+}

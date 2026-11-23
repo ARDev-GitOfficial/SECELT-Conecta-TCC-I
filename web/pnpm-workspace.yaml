@@ -1,2 +1,2 @@
 allowBuilds:
-  '@ybouane/liquidglass': set this to true or false
+  '@ybouane/liquidglass': false

@@ -1,1 +1,38 @@
-const CACHE='secelt-shell-v2';self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(['/','/manifest.webmanifest','/assets/brand.svg']))));self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k))))));self.addEventListener('fetch',e=>{if(e.request.method!=='GET'||new URL(e.request.url).pathname.startsWith('/api/'))return;e.respondWith(fetch(e.request).then(r=>{const copy=r.clone();caches.open(CACHE).then(c=>c.put(e.request,copy));return r}).catch(()=>caches.match(e.request).then(r=>r||caches.match('/'))))});
+const CACHE = 'secelt-municipal-v6';
+const APP_SHELL = [
+  '/',
+  '/manifest.webmanifest',
+  '/assets/brand.svg',
+  '/assets/prefeitura-guama.png',
+  '/assets/orla-portal.png'
+];
+
+self.addEventListener('install', event => {
+  event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(APP_SHELL)));
+});
+
+self.addEventListener('activate', event => {
+  event.waitUntil(caches.keys().then(keys => Promise.all(
+    keys.filter(key => key.startsWith('secelt-') && key !== CACHE).map(key => caches.delete(key))
+  )));
+});
+
+self.addEventListener('fetch', event => {
+  const { request } = event;
+  const { origin, pathname } = new URL(request.url);
+  if (request.method !== 'GET' || origin !== self.location.origin || pathname.startsWith('/api/') || pathname.startsWith('/downloads/')) return;
+
+  event.respondWith(fetch(request).then(async response => {
+    if (response.ok) {
+      const copy = response.clone();
+      await caches.open(CACHE).then(cache => cache.put(request, copy)).catch(() => {});
+    }
+    return response;
+  }, async () => {
+    const cache = await caches.open(CACHE);
+    const cached = await cache.match(request);
+    if (cached) return cached;
+    if (request.mode === 'navigate') return await cache.match('/') ?? Response.error();
+    return Response.error();
+  }));
+});

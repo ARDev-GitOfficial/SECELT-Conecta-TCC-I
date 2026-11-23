@@ -1,13 +1,13 @@
 {
   "name": "SECELT Conecta",
   "short_name": "SECELT",
-  "description": "Esporte, cultura, lazer, turismo e eventos em um só lugar.",
+  "description": "Sua cidade, mais perto. Histórias, páginas, eventos e conexões em São Miguel do Guamá.",
   "lang": "pt-BR",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
-  "background_color": "#edf6fa",
-  "theme_color": "#0D5BA6",
+  "background_color": "#070908",
+  "theme_color": "#070908",
   "icons": [
     {
       "src": "/assets/brand.svg",

@@ -1,0 +1,18 @@
+[build]
+  base = "."
+  command = "npm --prefix web ci --ignore-scripts && npm --prefix web run build:netlify"
+  publish = "web/dist"
+
+[build.environment]
+  NODE_VERSION = "24"
+
+[functions]
+  directory = "netlify/functions-generated"
+  node_bundler = "esbuild"
+
+[[headers]]
+  for = "/downloads/SECELT-Conecta-demo.apk"
+  [headers.values]
+    Content-Type = "application/vnd.android.package-archive"
+    Content-Disposition = "attachment; filename=SECELT-Conecta-demo.apk"
+    X-Content-Type-Options = "nosniff"

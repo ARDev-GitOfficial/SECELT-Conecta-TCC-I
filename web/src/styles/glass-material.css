@@ -1,0 +1,221 @@
+@property --glass-light-x {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 50%;
+}
+
+@property --glass-light-y {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 50%;
+}
+
+html,
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --brand: #66baff;
+  --brand-strong: #1688f4;
+  --brand-soft: rgb(28 123 221 / 18%);
+  --brand-rim: rgb(91 176 255 / 42%);
+  --accent-green: #62d697;
+  --accent-green-soft: rgb(37 139 93 / 17%);
+  --page: #061426;
+  --surface: #0c2038;
+  --surface-soft: #102c4c;
+  --text: #f3f8ff;
+  --muted: #b8cce2;
+  --line: rgb(104 165 224 / 26%);
+}
+
+html[data-theme="dark"] body {
+  color: var(--text);
+  background:
+    radial-gradient(ellipse at 12% 0%, rgb(18 106 197 / 25%), transparent 38rem),
+    radial-gradient(ellipse at 91% 38%, rgb(13 75 145 / 19%), transparent 42rem),
+    linear-gradient(155deg, #061426 0%, #081b31 48%, #07172a 100%);
+}
+
+html[data-theme="dark"] .topbar,
+html[data-theme="dark"] .admin-top {
+  color: #f5f9ff;
+  border-color: rgb(105 169 231 / 25%);
+}
+
+html[data-theme="dark"] .topbar .brand,
+html[data-theme="dark"] .topbar .brand b,
+html[data-theme="dark"] .topbar .brand small,
+html[data-theme="dark"] .topbar .official,
+html[data-theme="dark"] .admin-entry,
+html[data-theme="dark"] .section-heading h2,
+html[data-theme="dark"] .feature-text h2,
+html[data-theme="dark"] .news-section h2,
+html[data-theme="dark"] .event-filter h2 {
+  color: #f3f8ff;
+}
+
+html[data-theme="dark"] .stat-card b {
+  color: #f5f9ff;
+}
+
+html[data-theme="dark"] .news-meta,
+html[data-theme="dark"] .event-meta,
+html[data-theme="dark"] .eyebrow.muted,
+html[data-theme="dark"] .gallery-head,
+html[data-theme="dark"] .tour-note {
+  color: #c0d6ee;
+}
+
+html[data-theme="dark"] .button.blue,
+html[data-theme="dark"] .button:not(.outline):not(.light),
+html[data-theme="dark"] .glass-action {
+  color: #fff !important;
+}
+
+.liquid-target {
+  position: relative;
+  isolation: isolate;
+  --glass-radius: 20px;
+  overflow: hidden;
+  border-radius: var(--glass-radius) !important;
+}
+
+.liquid-target.glass-ripple { clip-path: inset(0 round var(--glass-radius)) !important; }
+
+.liquid-target:not(.liquid-fallback) {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  touch-action: pan-y !important;
+  border-color: rgb(125 190 247 / 31%) !important;
+  box-shadow:
+    0 14px 34px rgb(0 8 22 / 25%),
+    inset 0 1px 0 rgb(231 246 255 / 25%) !important;
+}
+
+.liquid-target:not(.liquid-fallback) > canvas {
+  display: block !important;
+  opacity: 1 !important;
+  mix-blend-mode: normal;
+}
+
+html[data-theme="dark"] .stat-grid .stat-card.liquid-target:not(.liquid-fallback) {
+  background-color: rgb(12 60 112 / 34%) !important;
+  background-image: none !important;
+  border-color: rgb(113 187 255 / 42%) !important;
+}
+
+.liquid-target::after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  left: var(--touch-x, 50%);
+  top: var(--touch-y, 50%);
+  width: var(--wave-diameter, 360px);
+  height: var(--wave-diameter, 360px);
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(
+    circle,
+    transparent 57%,
+    rgb(242 250 255 / 42%) 59%,
+    rgb(168 215 255 / 30%) 60.5%,
+    transparent 63%,
+    transparent 76%,
+    rgb(219 239 255 / 19%) 77.5%,
+    transparent 80%
+  );
+  filter: blur(.7px);
+  transform: translate(-50%, -50%) scale(.025);
+  transform-origin: center !important;
+  mix-blend-mode: normal;
+}
+
+.liquid-target.glass-ripple::after {
+  animation: glass-water-ripple 1040ms cubic-bezier(.12, .68, .25, 1) both;
+}
+
+@keyframes glass-water-ripple {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(.025); }
+  12% { opacity: var(--water-strength, .72); }
+  78% { opacity: .48; }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(1); }
+}
+
+.bottom-nav-glass.liquid-target { --glass-radius: 30px; }
+.event-modal.liquid-target { --glass-radius: 26px; }
+.glass-action.liquid-target { --glass-radius: 18px; }
+
+.liquid-target::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(
+    ellipse var(--glass-light-rx, 24%) var(--glass-light-ry, 14%) at var(--glass-light-x, 50%) var(--glass-light-y, 50%),
+    rgb(246 252 255 / 46%) 0%,
+    rgb(203 231 255 / 27%) 34%,
+    rgb(144 197 255 / 10%) 62%,
+    transparent 100%
+  );
+  filter: blur(8px);
+  transform: scale(.98);
+  transition:
+    opacity 900ms ease,
+    transform 1500ms cubic-bezier(.2, .65, .25, 1),
+    --glass-light-x var(--glass-glide-duration, 5000ms) cubic-bezier(.2, .65, .25, 1),
+    --glass-light-y var(--glass-glide-duration, 5000ms) cubic-bezier(.2, .65, .25, 1);
+}
+
+.liquid-target.glass-light-visible::before {
+  opacity: .2;
+  transform: scale(1.015);
+}
+
+.liquid-target.glass-light-contact::before {
+  opacity: .32;
+  filter: blur(7px);
+  transition-duration: 360ms, 360ms, 360ms, 360ms;
+}
+
+.event-modal.liquid-target:not(.liquid-fallback) {
+  background: rgb(9 37 69 / 46%) !important;
+  background-image: none !important;
+  border-color: rgb(150 205 255 / 45%) !important;
+  box-shadow:
+    0 24px 70px rgb(0 6 17 / 48%),
+    inset 0 1px 0 rgb(237 248 255 / 28%) !important;
+}
+
+.liquid-fallback {
+  background: rgb(12 39 70 / 60%) !important;
+  -webkit-backdrop-filter: blur(8px) saturate(125%);
+  backdrop-filter: blur(8px) saturate(125%);
+  border-color: rgb(123 190 255 / 35%) !important;
+}
+
+.modal-scrim {
+  -webkit-backdrop-filter: blur(2px) !important;
+  backdrop-filter: blur(2px) !important;
+}
+
+html[data-theme="dark"] .bottom-nav-glass {
+  border-color: rgb(113 187 255 / 48%) !important;
+}
+
+@media (max-width: 700px) {
+  .bottom-nav-glass { touch-action: pan-y !important; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .liquid-target:not(.glass-light-visible)::before { transition: none; }
+  .liquid-target.glass-ripple::after { animation-duration: 700ms; }
+}

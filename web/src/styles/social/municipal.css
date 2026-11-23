@@ -1,0 +1,109 @@
+html:root[data-appearance] { --sg-accent: #6bcdf1; --sg-accent-strong: #2da8dd; --municipal-green: #8cd5ac; }
+html:root[data-appearance="black"] {
+  --sg-bg: #070908;
+  --sg-bg-deep: #030504;
+  --sg-text: #f7faf8;
+  --sg-muted: #a7b4ae;
+  --sg-glass: rgb(20 25 23 / 91%);
+  --sg-glass-high: #202823;
+  --sg-line: #303a35;
+  --sg-rim: #46534c;
+  --surface-strong: #171c19;
+  --surface-soft: #212824;
+  --brand-soft: #172c24;
+}
+html[data-appearance="black"] body { background: #070908; }
+.municipal-banner {
+  color: white;
+  background-color: #105335;
+  background-image: linear-gradient(95deg,#061d15df,#092823b8 39%,#01384f70 76%,#052a3bd1),url('/assets/orla-portal.png');
+  background-size: cover;
+  background-position: center;
+  border-bottom: 3px solid #2fa9d7;
+}
+.municipal-banner-inner {
+  box-sizing: border-box;
+  max-width: 1190px;
+  min-height: 172px;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 20px 28px;
+}
+.municipal-banner h1 {
+  margin: 3px 0;
+  color: white;
+  font: 750 clamp(30px,4vw,53px)/1.08 "Segoe UI",sans-serif;
+  letter-spacing: -.045em;
+}
+.municipal-banner p { margin: 8px 0 0; color: #e2eee8; font-size: 15px; }
+.municipal-eyebrow { font-size: 11px; letter-spacing: .16em; font-weight: 750; color: #b0e4c5; }
+.municipal-banner img { display: block; width: 100px; height: 100px; object-fit: contain; }
+.municipal-section-title { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 0 0 12px; }
+.municipal-section-title h2 { margin: 0; font-size: clamp(19px,2.1vw,26px); line-height: 1.2; letter-spacing: -.035em; }
+.municipal-section-title a {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+  color: var(--sg-accent);
+  font-size: 13px;
+}
+.municipal-news { margin-bottom: 26px; }
+.municipal-news-grid { display: grid; grid-template-columns: minmax(0,1.4fr) minmax(0,1fr); gap: 8px; }
+.municipal-story {
+  box-sizing: border-box;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  min-height: 112px;
+  display: flex;
+  align-items: end;
+  padding: 12px;
+  background: #16392a;
+  border-radius: 9px;
+}
+.municipal-story:first-child { grid-row: span 2; min-height: 236px; }
+.municipal-story:only-child { grid-column: 1/-1; min-height: 155px; }
+.municipal-story img,.municipal-story::before {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -2;
+}
+.municipal-story::before {
+  content: "";
+  background: linear-gradient(to top,#030907f5 2%,#030908bf 36%,#0c18120a 100%);
+  z-index: -1;
+}
+.municipal-story span {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 5px;
+  color: #beefd0;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .025em;
+}
+.municipal-story time { color: #eef4f0; font-weight: 500; }
+.municipal-story i { width: 3px; height: 3px; background: #a1cdb0; border-radius: 50%; }
+.sg-main .municipal-story h3 { margin: 5px 0 0; font-size: 15px; line-height: 1.17; color: #fff; letter-spacing: -.015em; }
+.sg-main .municipal-story:first-child h3 { font-size: clamp(19px,2.1vw,26px); }
+.municipal-story:hover h3 { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+.municipal-place-filters { flex-wrap: wrap; }
+html[data-appearance] .sg-feed-filters button.active { background: #23533c; color: #fff; border-color: #529972; }
+html[data-appearance="black"] .sg-nav-link.active { background: #193026; color: #a2dfb9; }
+@media(max-width:600px) {
+  .municipal-banner-inner { min-height: 128px; padding: 16px; gap: 12px; }
+  .municipal-banner h1 { font-size: clamp(25px,6.5vw,36px); }
+  .municipal-banner p { font-size: 12px; }
+  .municipal-banner img { width: 67px; height: 67px; }
+  .municipal-news-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .municipal-story:first-child { grid-column: 1/-1; grid-row: auto; min-height: 154px; }
+  .municipal-story { min-height: 108px; }
+}
