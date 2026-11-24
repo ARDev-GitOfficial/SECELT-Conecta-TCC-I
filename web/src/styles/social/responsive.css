@@ -34,7 +34,13 @@
 }
 @media(max-width:760px) {
   html[data-appearance] body { padding: 0; }
-  .social-shell { padding-bottom: 104px; }
+  .social-shell {
+    --sg-mobile-dock-inset: max(12px, env(safe-area-inset-bottom));
+    padding-bottom: calc(92px + var(--sg-mobile-dock-inset));
+  }
+  body:has(> iframe#nl-badge-frame) .social-shell {
+    --sg-mobile-dock-inset: max(68px, env(safe-area-inset-bottom));
+  }
   .sg-topbar { height: 67px; }
   .sg-topbar-inner { padding: 0 18px; gap: 15px; }
   .sg-logo { min-width: 0; }
@@ -114,7 +120,7 @@
     bottom: 0;
     left: 0;
     right: 0;
-    padding: 0 0 max(12px,env(safe-area-inset-bottom));
+    padding: 0 0 var(--sg-mobile-dock-inset);
     z-index: 40;
     pointer-events: none;
   }
@@ -211,7 +217,7 @@
   .sg-story-caption { left: 23px; right: 23px; bottom: 24px; }
   .sg-story-caption>h2 { font-size: 31px; }
   .sg-lightbox { padding: 44px 10px 17px; }
-  .shell .toast { bottom: 94px; font-size: 11px; }
+  .shell .toast { bottom: calc(82px + var(--sg-mobile-dock-inset, 12px)); font-size: 11px; }
   .sg-editorial:not(.embedded) { padding: 15px 15px 45px; }
   .sg-partner-header { padding: 13px; gap: 10px; }
   .sg-partner-header .sg-text-button { font-size: 10px!important; }

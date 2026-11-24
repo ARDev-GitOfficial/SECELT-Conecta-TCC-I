@@ -1,11 +1,8 @@
-import { ArrowDownToLine, Settings, Smartphone } from 'lucide-react';
+import { ArrowDownToLine, Globe, Smartphone } from 'lucide-react';
 
 const apkFile = 'SECELT-Conecta-demo.apk';
 
 export function DownloadPage() {
-  const { hostname, origin } = window.location;
-  const isLocal = ['localhost', '127.0.0.1', '[::1]'].includes(hostname);
-
   return <div className="sg-download-page">
     <section className="sg-download-card sg-glass" aria-labelledby="download-title">
       <img className="sg-download-logo" src="/assets/brand.svg" alt="" width="80" height="80" />
@@ -21,18 +18,13 @@ export function DownloadPage() {
     <div className="sg-download-instructions">
       <section className="sg-download-panel sg-glass" aria-labelledby="install-title">
         <Smartphone size={21} aria-hidden="true" />
-        <h2 id="install-title">Instalar no celular</h2>
-        <p>Abra o APK baixado no Android. Se o sistema solicitar, permita a instalação pelo navegador ou pelo gerenciador de arquivos.</p>
+        <h2 id="install-title">Instalar ou atualizar</h2>
+        <p>Abra o APK baixado no Android. Se o SECELT Conecta já estiver instalado, confirme a atualização.</p>
       </section>
       <section className="sg-download-panel sg-glass" aria-labelledby="connection-title">
-        <Settings size={21} aria-hidden="true" />
-        <h2 id="connection-title">Conectar ao portal</h2>
-        {isLocal
-          ? <p>No app, toque na engrenagem e informe o endereço do servidor acessível pelo celular.</p>
-          : <>
-            <p>No app, toque na engrenagem <strong>Configurar conexão</strong>, informe este endereço e toque em <strong>Salvar e reconectar</strong>.</p>
-            <code>{origin}</code>
-          </>}
+        <Globe size={21} aria-hidden="true" />
+        <h2 id="connection-title">Abrir o portal</h2>
+        <p>Com internet, abra o aplicativo para ir direto ao Feed. O tema escolhido fica salvo no aparelho.</p>
       </section>
     </div>
   </div>;

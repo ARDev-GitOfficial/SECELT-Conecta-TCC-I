@@ -56,18 +56,6 @@
 .sg-download-panel { padding: 22px; }
 .sg-download-panel > svg { color: var(--sg-accent); }
 .sg-download-panel h2 { margin: 6px 0 8px; font-size: 1.05rem; }
-.sg-download-panel strong { color: var(--sg-text); }
-.sg-download-panel code {
-  display: block;
-  width: fit-content;
-  margin-top: 12px;
-  padding: 6px 9px;
-  overflow-wrap: anywhere;
-  border-radius: 7px;
-  background: var(--surface-soft);
-  color: var(--sg-accent);
-  user-select: all;
-}
 
 @media (max-width: 900px) {
   .sg-download-card { grid-template-columns: auto minmax(0, 1fr); }

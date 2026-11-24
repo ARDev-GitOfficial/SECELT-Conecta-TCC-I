@@ -21,7 +21,7 @@ Testes com `node --test tests/*.test.mjs`. No site, abra **Baixar app** para bai
 | [`web/src`](web/src) | Entrada React em `main.jsx`, navegação em `app/` e telas em `features/` |
 | [`server`](server) | Rotas HTTP e regras da API |
 | [`database`](database) | Esquema e catálogo inicial do SQLite |
-| [`android`](android/app/src/main/java/br/gov/secel/conecta) | `MainActivity.kt` coordena as telas em `ui/screens/` |
+| [`android`](android/app/src/main/java/br/gov/secel/conecta) | App Kotlin abre o portal em WebView, com entrada pelo Feed |
 | [`tests`](tests) | Testes de integração e regras do feed |
 
 ## Netlify
